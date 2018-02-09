@@ -6,9 +6,20 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
+
+/*
+@author Virendra
+
+This class is to write the lines provided by the reader class  on physical location.
+
+ */
 public class CSVSplitter implements  Runnable {
+
+    private static final Logger LOGGER = Logger.getLogger(CSVReader.class.getName());
 
     static int index=0;
     List< String> lines;
@@ -20,6 +31,8 @@ public class CSVSplitter implements  Runnable {
 
 
     public void run()  {
+
+        LOGGER.info(Thread.currentThread().getName() +" Enter run() :: " +new Date());
 
         int i = index;
         synchronized ((Object) index) {
@@ -35,8 +48,9 @@ public class CSVSplitter implements  Runnable {
             writer.flush();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info(" Exception:: " + e.getStackTrace());
         }
+        LOGGER.info(Thread.currentThread().getName() +" Exit run() :: " +new Date());
 
     }
 

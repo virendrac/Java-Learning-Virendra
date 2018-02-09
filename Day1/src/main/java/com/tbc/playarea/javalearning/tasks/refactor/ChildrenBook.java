@@ -6,12 +6,7 @@ package com.tbc.playarea.javalearning.tasks.refactor;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Movie : Simple data class representing movie data.
- * 
- * @author chandrashekarv
- *
- */
+
 public class ChildrenBook extends Book implements Serializable  {
 
 	private static final long serialVersionUID = -734879258402115788L;

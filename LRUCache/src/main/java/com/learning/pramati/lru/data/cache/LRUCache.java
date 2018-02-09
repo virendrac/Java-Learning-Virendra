@@ -1,6 +1,13 @@
-package com.pramati.java.lru.data.cache;
+package com.learning.pramati.lru.data.cache;
 
-import com.pramati.java.lru.data.LRUData;
+import com.learning.pramati.lru.data.LRUData;
+
+/*
+@author Virendra
+
+This class is for imlementing LRU cache using LRUData objects.
+
+ */
 
 public class LRUCache <T> {
     private int size;

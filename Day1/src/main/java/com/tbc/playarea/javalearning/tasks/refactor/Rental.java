@@ -5,12 +5,6 @@ package com.tbc.playarea.javalearning.tasks.refactor;
 
 import java.io.Serializable;
 
-/**
- * Represent a customer renting a book.
- * 
- * @author chandrashekarv
- *
- */
 public class Rental implements Serializable {
 
 	private static final long serialVersionUID = 1256869448913370768L;

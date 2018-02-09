@@ -1,7 +1,14 @@
-package com.pramati.java.lru.app;
+package com.learning.pramati.lru.app;
 
 import com.learning.pramati.property.PropertyReader;
-import com.pramati.java.lru.data.cache.LRUCache;
+import com.learning.pramati.lru.data.cache.LRUCache;
+
+/*
+@author Virendra
+
+This class is for imlementing an example of LRU cache
+
+ */
 public class App {
 
     public static void main(String [] args){

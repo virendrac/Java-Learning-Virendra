@@ -1,4 +1,11 @@
-package com.pramati.java.lru.data;
+package com.learning.pramati.lru.data;
+
+/*
+@author Virendra
+
+This class is to act as a single node of data on the LRU cache.
+
+ */
 
 public class LRUData <T> {
     private T data;

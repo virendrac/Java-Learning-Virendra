@@ -9,13 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import com.tbc.playarea.javalearning.tasks.refactor.service.*;
 
-/**
- * Customer class that denotes customer details as well as customer related
- * operations.
- * 
- * @author chandrashekarv
- *
- */
+
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = 851426779607326255L;
