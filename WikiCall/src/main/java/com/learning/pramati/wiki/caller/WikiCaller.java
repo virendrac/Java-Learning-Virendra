@@ -12,7 +12,11 @@ import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+/*
+*
+@author Virendra
+*
+*/
 public class WikiCaller  implements Callable<String>{
     String keyword;
     public WikiCaller(String str) {

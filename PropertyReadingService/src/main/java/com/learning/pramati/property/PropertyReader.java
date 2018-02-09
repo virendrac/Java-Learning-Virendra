@@ -4,7 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
+/*
+*
+@author Virendra
+*
+*/
 public class PropertyReader {
     public static String getProperty(String propertyName){
 

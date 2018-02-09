@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
-
+/*
+*
+@author Virendra
+*
+*/
 public class WordCounter  implements Callable<Map<String, Integer>>{
 
     private String path;
