@@ -15,13 +15,10 @@ import java.util.concurrent.*;
 */
 public class MappingService {
 
-    private Map<String, Integer> wordCount;
-
     public MappingService(){
-        wordCount=new HashMap<String, Integer>();
     }
 
-    public List<Future<Map<String,Integer>>>  executeMapping(){
+    public void  executeMapping(){
         List<String> files= FileFinder.filePathFinder();
 
         ExecutorService executorService = new ScheduledThreadPoolExecutor(10);
@@ -30,11 +27,22 @@ public class MappingService {
 
         files.forEach(file->
         {
-            future.add(executorService.submit(new WordCounter(file)));
+            executorService.submit(new WordCounter(file));
         });
+    }
 
-        return future;
-
+    public Map<String,Integer> getMappedData(){
+        while(true){
+            if(Thread.activeCount()>2){
+                try {
+                    this.wait(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                return WordCounter.retMap;
+            }
+        }
     }
 
 }

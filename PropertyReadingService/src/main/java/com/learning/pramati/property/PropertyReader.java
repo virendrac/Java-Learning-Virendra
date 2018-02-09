@@ -10,15 +10,15 @@ import java.util.Properties;
 *
 */
 public class PropertyReader {
+//    public static InputStream input =PropertyReader.class.getResourceAsStream("config.properties");
     public static String getProperty(String propertyName){
 
         String retVal="";
         Properties prop = new Properties();
-        InputStream input = null;
+        InputStream input=null;
 
         try {
-
-            input = new FileInputStream("/Users/virendrac/Training/Java-Learning-Virendra/PropertyReadingService/src/main/resources/config.properties");
+            input=new FileInputStream("./PropertyReadingService/src/main/resources/config.properties");
 
             // load a properties file
             prop.load(input);

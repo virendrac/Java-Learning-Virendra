@@ -1,5 +1,6 @@
 package com.learning.pramati.wiki.caller;
 
+import com.learning.pramati.property.PropertyReader;
 import sun.net.www.protocol.https.HttpsURLConnectionImpl;
 
 import java.io.*;
@@ -23,10 +24,14 @@ public class WikiCaller  implements Callable<String>{
         keyword=str;
     }
 
+    public static String basePath=PropertyReader.getProperty("baseFolder");
+    String wikiURL = PropertyReader.getProperty("wikiURL");
+
     @Override
     public String call() throws Exception {
 
-        String https_url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="+keyword;
+
+        String https_url = wikiURL+keyword;
         URL url;
         try {
 
@@ -47,7 +52,7 @@ public class WikiCaller  implements Callable<String>{
                     Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
                     });
 
-                    BufferedWriter writer = Files.newBufferedWriter(Paths.get("/Users/virendrac/Training/JavaLearning/WikiCall/src/main/resources/WikiFiles/" + keyword + ".txt"));
+                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath +"/"+ keyword + ".txt"));
                     response = wikiMap.get("extract").toString();
                     writer.write(response);
                     writer.flush();

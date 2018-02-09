@@ -15,6 +15,7 @@
         <module>LRUCache</module>
         <module>WikiCall</module>
         <module>WordCounter</module>
+        <module>GenericEnum</module>
     </modules>
 
     <build>
