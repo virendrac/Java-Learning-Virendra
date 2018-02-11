@@ -32,6 +32,7 @@ public class WordCounter  implements Runnable{
             lines.forEach(line-> {
                 String[] arr=line.split(" ");
                 for(String str: arr){
+                    str=str.replaceAll("[-+.^:,\"]","");
                     retMap.computeIfPresent(str, (k,v) -> v+1);
                     retMap.putIfAbsent(str,1);
                 }

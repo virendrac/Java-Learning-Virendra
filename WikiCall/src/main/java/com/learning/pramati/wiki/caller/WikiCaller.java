@@ -52,7 +52,7 @@ public class WikiCaller  implements Callable<String>{
                     Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
                     });
 
-                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath +"/"+ keyword + ".txt"));
+                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
                     response = wikiMap.get("extract").toString();
                     writer.write(response);
                     writer.flush();

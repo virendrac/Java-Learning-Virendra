@@ -21,7 +21,7 @@ public class MappingService {
     public void  executeMapping(){
         List<String> files= FileFinder.filePathFinder();
 
-        ExecutorService executorService = new ScheduledThreadPoolExecutor(10);
+        ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(10);
 
         List<Future<Map<String,Integer>>> future=new ArrayList<>();
 
@@ -29,20 +29,20 @@ public class MappingService {
         {
             executorService.submit(new WordCounter(file));
         });
+
+        while(!executorService.getQueue().isEmpty()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        executorService.shutdown();
     }
 
     public Map<String,Integer> getMappedData(){
-        while(true){
-            if(Thread.activeCount()>2){
-                try {
-                    this.wait(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }else{
-                return WordCounter.retMap;
-            }
-        }
+
+        return WordCounter.retMap;
     }
 
 }

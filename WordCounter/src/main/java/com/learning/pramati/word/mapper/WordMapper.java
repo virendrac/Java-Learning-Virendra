@@ -28,51 +28,7 @@ public class WordMapper {
     public String generateMap() {
         MappingService service=new MappingService();
         service.executeMapping();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         wordMap=service.getMappedData();
-//        int index=0;
-//        while (true){
-//            if(!futureMap.isEmpty()) {
-//                if(null!=futureMap.get(index)){
-//                    if (futureMap.get(index).isDone()){
-//                        try {
-//                            Map<String,Integer> m=futureMap.get(index).get();
-//                            //Map<String, Integer> mx = new HashMap<>(m1);
-//                            m.forEach((k, v) -> wordMap.merge(k, v, Integer::sum));
-//                            futureMap.remove(index);
-//                            index++;
-//                            if(index>=futureMap.size()){
-//                                index=0;
-//                            }
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                            futureMap.remove(index);
-//                            index++;
-//                            if(index>=futureMap.size()){
-//                                index=0;
-//                            }
-//                        } catch (ExecutionException e) {
-//                            e.printStackTrace();
-//                            futureMap.remove(index);
-//                            index++;
-//                            if(index>=futureMap.size()){
-//                                index=0;
-//                            }
-//                        }
-//                    }else{
-//                        index++;
-//                    }
-//
-//                }
-//
-//            }else{
-//                break;
-//            }
-//        }
 
         System.out.println(wordMap);
         wordSet=wordMap.keySet();
