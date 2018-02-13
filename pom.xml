@@ -16,6 +16,7 @@
         <module>WikiCall</module>
         <module>WordCounter</module>
         <module>GenericEnum</module>
+        <module>AnnotationTask</module>
     </modules>
 
     <build>
