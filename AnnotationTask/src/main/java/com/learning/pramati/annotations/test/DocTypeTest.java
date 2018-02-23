@@ -26,9 +26,16 @@ public class DocTypeTest {
         a.setGender("Male");
         a.setDob(new Date("01/01/1900"));
         a.setAadhaarNumber(123456789012L);
-        if(a.getClass().isAnnotationPresent(DocType.class)) {
-            List errors = DocTypeValidator.validate(a);
-            Assert.assertEquals("Error(s): " + errors.toString(), 0, errors.size());
+        try {
+            if(a.getClass().isAnnotationPresent(DocType.class)) {
+                List errors = null;
+
+                    errors = DocTypeValidator.validate(a);
+
+                Assert.assertEquals("Error(s): " + errors.toString(), 0, errors.size());
+            }
+        } catch (IllegalAccessException e) {
+            Assert.assertTrue("IllegalAccessException: "+e.getMessage(),false);
         }
     }
 

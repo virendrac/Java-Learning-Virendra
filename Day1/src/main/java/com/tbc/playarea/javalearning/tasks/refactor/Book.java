@@ -35,13 +35,6 @@ public abstract class Book {
 
     public abstract int getBookCategory();
 
-    public double getCalculatedRent(int daysRented) {
-        double thisAmount=0;
+    public abstract double getCalculatedRent(int daysRented);
 
-        thisAmount += 2;
-        if (daysRented > 2)
-            thisAmount += (daysRented - 2) * 1.5;
-
-        return thisAmount;
-    }
 }
