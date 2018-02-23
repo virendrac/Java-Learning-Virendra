@@ -27,41 +27,40 @@ public class LRUCache <T> {
             tail=t;
             counter++;
         }else{
-            LRUData<T> temp=head;
+            LRUData<T> temp=tail;
             while(temp!=null){
                 if(temp.getData().equals(t.getData())){
-                    t.setPrevNode(tail);
-                    tail.setNextNode(t);
+                    t.setNextNode(head);
+                    head.setPrevNode(t);
                     temp.getPrevNode().setNextNode(temp.getNextNode());
                     temp.getNextNode().setPrevNode(temp.getPrevNode());
-                    tail=t;
-//                    break;
+                    head=t;
                     return;
                 }
-                temp=temp.getNextNode();
+                temp=temp.getPrevNode();
             }
 
             if(counter<size){
-                tail.setNextNode(t);
-                temp=tail;
-                tail=t;
-                tail.setPrevNode(temp);
+                head.setPrevNode(t);
+                temp=head;
+                head=t;
+                head.setNextNode(temp);
                 counter++;
             }else{
-                t.setPrevNode(tail);
-                tail.setNextNode(t);
-                tail=t;
-                head=head.getNextNode();
-                head.setPrevNode(null);
+                t.setNextNode(head);
+                head.setPrevNode(t);
+                head=t;
+                tail=tail.getPrevNode();
+                tail.setNextNode(null);
             }
         }
     }
 
     public void printCache(){
-        LRUData<T> temp=tail;
+        LRUData<T> temp=head;
         while(temp!=null){
             System.out.println(temp.getData());
-            temp=temp.getPrevNode();
+            temp=temp.getNextNode();
         }
     }
 }

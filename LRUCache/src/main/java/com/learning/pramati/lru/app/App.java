@@ -23,6 +23,7 @@ public class App {
 
         cache.add(new Character('D'));
 
+
         cache.printCache();
         cache.add(new Character('C'));
         cache.printCache();
