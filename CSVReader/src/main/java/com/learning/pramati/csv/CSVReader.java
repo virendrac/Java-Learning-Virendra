@@ -26,32 +26,32 @@ public class CSVReader {
 
     private static final Logger LOGGER = Logger.getLogger(CSVReader.class.getName());
 
-    public static void main(String[] args){
-        try {
+    public void read(String csvFile, int numberOfLinesPerFile){
 
-            LOGGER.info("main method time:: " +new Date());
-            ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+        try{
+            if(csvFile!=null && !csvFile.isEmpty() && Paths.get(csvFile) !=null && numberOfLinesPerFile >0) {
+                LOGGER.info("CSVReader.read :: start time " + new Date());
+                ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
-            Stream<String> lines = Files.lines(Paths.get(PropertyReader.getInstance().getProperty(CommonProperties.CSVFILE)));
-            final int numberOfLinesPerFile=Integer.parseInt(PropertyReader.getInstance().getProperty(CommonProperties.NUMBEROFLINESINFILE));
+                Stream<String> lines = Files.lines(Paths.get(csvFile));
 
-            List< String> list = new ArrayList<String>((int) (numberOfLinesPerFile*1.75));
+                List<String> list = new ArrayList<String>((int) (numberOfLinesPerFile * 1.75));
 
-            lines.forEach(line-> {
+                lines.forEach(line -> {
 
-                if(list.size()<numberOfLinesPerFile){
-                    list.add(line);
-                }else{
-                    CSVSplitter splitter=new CSVSplitter(new ArrayList<>(list));
-                    executorService.submit(splitter);
-                    list.clear();
-                }
+                    if (list.size() < numberOfLinesPerFile) {
+                        list.add(line);
+                    } else {
+                        CSVSplitter splitter = new CSVSplitter(new ArrayList<>(list));
+                        executorService.submit(splitter);
+                        list.clear();
+                    }
 
 
-            });
+                });
 
-            executorService.shutdown();
-
+                executorService.shutdown();
+            }
         }catch (FileNotFoundException e){
             LOGGER.info(" Exception:: " + e.getStackTrace());
         } catch (IOException e) {

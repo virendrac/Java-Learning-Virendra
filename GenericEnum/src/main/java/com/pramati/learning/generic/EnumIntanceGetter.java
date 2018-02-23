@@ -1,5 +1,6 @@
 package com.pramati.learning.generic;
 
+
 import java.util.Arrays;
 
 /*
@@ -19,5 +20,6 @@ public class EnumIntanceGetter {
                 }
             }
         return null;
+
     }
 }
