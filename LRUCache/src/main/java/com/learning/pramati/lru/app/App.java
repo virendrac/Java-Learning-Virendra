@@ -13,7 +13,7 @@ public class App {
 
     public static void main(String [] args){
 
-        LRUCache<Character> cache=new LRUCache<Character>(Integer.parseInt(PropertyReader.getProperty("lruCacheSize")));
+        LRUCache<Character> cache=new LRUCache<Character>(Integer.parseInt(PropertyReader.getInstance().getProperty("lruCacheSize")));
 
         cache.add(new Character('A'));
         cache.add(new Character('B'));

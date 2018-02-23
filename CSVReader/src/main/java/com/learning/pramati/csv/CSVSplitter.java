@@ -23,7 +23,7 @@ public class CSVSplitter implements  Runnable {
 
     static int index=0;
     List< String> lines;
-    static String writeLocation= PropertyReader.getProperty("writeLocation");
+    static String writeLocation= PropertyReader.getInstance().getProperty(CommonProperties.WRITELOCATION);
 
     public CSVSplitter(List< String>  lines) {
         this.lines=lines;

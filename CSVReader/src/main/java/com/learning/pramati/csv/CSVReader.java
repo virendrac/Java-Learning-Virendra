@@ -32,14 +32,14 @@ public class CSVReader {
             LOGGER.info("main method time:: " +new Date());
             ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
-            Stream<String> lines = Files.lines(Paths.get(PropertyReader.getProperty("csvFile")));
-            final int n=Integer.parseInt(PropertyReader.getProperty("numberOfLinesPerFile"));
+            Stream<String> lines = Files.lines(Paths.get(PropertyReader.getInstance().getProperty(CommonProperties.CSVFILE)));
+            final int numberOfLinesPerFile=Integer.parseInt(PropertyReader.getInstance().getProperty(CommonProperties.NUMBEROFLINESINFILE));
 
-            List< String> list = new ArrayList<String>((int) (n*1.75));
+            List< String> list = new ArrayList<String>((int) (numberOfLinesPerFile*1.75));
 
             lines.forEach(line-> {
 
-                if(list.size()<n){
+                if(list.size()<numberOfLinesPerFile){
                     list.add(line);
                 }else{
                     CSVSplitter splitter=new CSVSplitter(new ArrayList<>(list));

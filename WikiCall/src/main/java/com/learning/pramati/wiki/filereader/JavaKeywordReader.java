@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 /*
 *
@@ -13,18 +14,9 @@ import java.util.stream.Stream;
 */
 
 public class JavaKeywordReader implements MyFileReader {
+    private static final Logger LOGGER = Logger.getLogger(JavaKeywordReader.class.getName());
     @Override
     public List<String> read(String path) {
-//        List<String> list= new ArrayList<String>();
-//        stream.skip(1).forEach(line->{
-//            String[] arr=line.split(",");
-//            for (String str:arr) {
-//                if(!str.isEmpty()){
-//                    list.add(str);
-//                }
-//            }
-//        });
-//        return list;
 
         try {
 
@@ -41,7 +33,7 @@ public class JavaKeywordReader implements MyFileReader {
             });
             return list;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("EXCEPTION:: "+e.getMessage());
         }
         return null;
 

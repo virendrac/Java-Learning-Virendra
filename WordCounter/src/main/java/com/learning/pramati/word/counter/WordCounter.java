@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 /*
 *
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
 *
 */
 public class WordCounter  implements Runnable{
+    private static final Logger LOGGER = Logger.getLogger(WordCounter.class.getName());
 
     public static Map<String,Integer> retMap=new ConcurrentHashMap<>();
     private String path;
@@ -38,7 +40,7 @@ public class WordCounter  implements Runnable{
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("EXCEPTION:: "+e.getMessage());
         }
     }
 }

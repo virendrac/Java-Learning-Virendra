@@ -4,40 +4,35 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Logger;
+
 /*
 *
 @author Virendra
 *
 */
 public class PropertyReader {
-//    public static InputStream input =PropertyReader.class.getResourceAsStream("config.properties");
-    public static String getProperty(String propertyName){
 
-        String retVal="";
-        Properties prop = new Properties();
-        InputStream input=null;
+    private static final Logger LOGGER = Logger.getLogger(PropertyReader.class.getName());
+    private static PropertyReader object =null;
+    private Properties prop = new Properties();
 
-        try {
-            input=new FileInputStream("./PropertyReadingService/src/main/resources/config.properties");
-
-            // load a properties file
+    private PropertyReader() {
+        try (InputStream input=new FileInputStream("./PropertyReadingService/src/main/resources/config.properties")){
             prop.load(input);
-
-            retVal=prop.getProperty(propertyName);
-
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        } catch (IOException e) {
+            LOGGER.info("EXCEPTION:: "+e.getMessage());
         }
-        return retVal;
+    }
+
+    public static PropertyReader getInstance(){
+        if(object==null){
+            object=new PropertyReader();
+        }
+        return object;
+    }
+
+    public String getProperty(String propertyName){
+            return prop.getProperty(propertyName);
     }
 }

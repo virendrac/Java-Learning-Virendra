@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class Application {
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception {
 
-        FileLoader f1=new FileLoader(PropertyReader.getProperty("progLangFile"));
-        FileLoader f2=new FileLoader(PropertyReader.getProperty("fortuneFile"));
-        FileLoader f3=new FileLoader(PropertyReader.getProperty("javaKeywordsFile"));
+        FileLoader f1=new FileLoader(PropertyReader.getInstance().getProperty(FileNames.PROGRAMMING_LANGUAGE_FILE));
+        FileLoader f2=new FileLoader(PropertyReader.getInstance().getProperty(FileNames.FORTUNE_FILE));
+        FileLoader f3=new FileLoader(PropertyReader.getInstance().getProperty(FileNames.JAVA_KEYWORDS_FILE));
 
         ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
         CompletionService completionService = new ExecutorCompletionService(executorService);

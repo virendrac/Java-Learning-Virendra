@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
+
 /*
 *
 @author Virendra
@@ -15,6 +17,7 @@ import java.util.concurrent.*;
 */
 public class MappingService {
 
+    private static final Logger LOGGER = Logger.getLogger(MappingService.class.getName());
     public MappingService(){
     }
 
@@ -34,7 +37,7 @@ public class MappingService {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.info("EXCEPTION:: "+e.getMessage());
             }
         }
         executorService.shutdown();

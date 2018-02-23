@@ -5,10 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FortuneCompReader implements MyFileReader {
+    private static final Logger LOGGER = Logger.getLogger(FortuneCompReader.class.getName());
     @Override
     public List<String> read(String path) {
 
@@ -21,7 +23,7 @@ public class FortuneCompReader implements MyFileReader {
             });
             return list;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("EXCEPTION:: "+e.getMessage());
         }
         return null;
     }

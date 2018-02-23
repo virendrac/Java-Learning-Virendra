@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 /*
@@ -19,13 +21,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 *
 */
 public class WikiCaller  implements Callable<String>{
+    private static final Logger LOGGER = Logger.getLogger(WikiCaller.class.getName());
     String keyword;
     public WikiCaller(String str) {
         keyword=str;
     }
 
-    public static String basePath=PropertyReader.getProperty("baseFolder");
-    String wikiURL = PropertyReader.getProperty("wikiURL");
+    public static String basePath=PropertyReader.getInstance().getProperty("baseFolder");
+    String wikiURL = PropertyReader.getInstance().getProperty("wikiURL");
 
     @Override
     public String call() throws Exception {
@@ -37,35 +40,33 @@ public class WikiCaller  implements Callable<String>{
 
             url = new URL(https_url);
             HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-            synchronized (con) {
-                if (con.getResponseCode() == 200) {
+            if (con.getResponseCode() == 200) {
 
-                    ObjectMapper mapper = new ObjectMapper();
+                ObjectMapper mapper = new ObjectMapper();
 
 
-                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String response = br.readLine();
-                    String[] arr = response.split("\\{");
-                    response = arr[arr.length - 1];
-                    response = "{" + response.substring(0, response.length() - 3);
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String response = br.readLine();
+                String[] arr = response.split("\\{");
+                response = arr[arr.length - 1];
+                response = "{" + response.substring(0, response.length() - 3);
 
-                    Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
-                    });
+                Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
+                });
 
-                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
-                    response = wikiMap.get("extract").toString();
-                    writer.write(response);
-                    writer.flush();
-                    this.notifyAll();
-                } else {
-                    return "Unsuccessful writing :: " + keyword + ".txt";
-                }
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
+                response = wikiMap.get("extract").toString();
+                writer.write(response);
+                writer.flush();
+                this.notifyAll();
+            } else {
+                return "Unsuccessful writing :: " + keyword + ".txt";
             }
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.info("EXCEPTION:: "+e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("EXCEPTION:: "+e.getMessage());
         }
         return "success writing :: "+keyword+".txt";
     }

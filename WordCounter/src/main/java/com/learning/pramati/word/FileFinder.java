@@ -10,7 +10,7 @@ public class FileFinder {
 
     public static List<String> filePathFinder(){
 
-        File folder = new File(PropertyReader.getProperty("baseFolder"));
+        File folder = new File(PropertyReader.getInstance().getProperty("baseFolder"));
         File[] arrayOfFiles = folder.listFiles();
         List<String > listOfFiles= new ArrayList<String>(arrayOfFiles.length*2);
 

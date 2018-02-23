@@ -8,11 +8,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
+import java.util.logging.Logger;
 
 
 public class WordMapper {
 
+    private static final Logger LOGGER = Logger.getLogger(WordMapper.class.getName());
 
     private Map<String, Integer> wordMap;
     private Set<String> wordSet;
@@ -30,7 +31,7 @@ public class WordMapper {
         service.executeMapping();
         wordMap=service.getMappedData();
 
-        System.out.println(wordMap);
+        LOGGER.info(wordMap.toString()); // printing the word counts.
         wordSet=wordMap.keySet();
         return "Successfully map generated!";
     }
