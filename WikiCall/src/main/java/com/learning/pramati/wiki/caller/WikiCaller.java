@@ -45,27 +45,26 @@ public class WikiCaller  implements Callable<String>{
                 ObjectMapper mapper = new ObjectMapper();
 
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String response = br.readLine();
-                String[] arr = response.split("\\{");
-                response = arr[arr.length - 1];
-                response = "{" + response.substring(0, response.length() - 3);
+                try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                    String response = br.readLine();
+                    String[] arr = response.split("\\{");
+                    response = arr[arr.length - 1];
+                    response = "{" + response.substring(0, response.length() - 3);
 
-                Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
-                });
+                    Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
+                    });
 
-                BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
-                response = wikiMap.get("extract").toString();
-                writer.write(response);
-                writer.flush();
-                this.notifyAll();
+                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
+                    response = wikiMap.get("extract").toString();
+                    writer.write(response);
+                    writer.flush();
+                    this.notifyAll();
+                }
             } else {
                 return "Unsuccessful writing :: " + keyword + ".txt";
             }
 
         } catch (MalformedURLException e) {
-            LOGGER.info("EXCEPTION:: "+e.getMessage());
-        } catch (IOException e) {
             LOGGER.info("EXCEPTION:: "+e.getMessage());
         }
         return "success writing :: "+keyword+".txt";
