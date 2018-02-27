@@ -4,8 +4,10 @@
 package com.learning.pramati.annotations.doc;
 
 import com.learning.pramati.annotations.DocType;
+import com.learning.pramati.annotations.common.DocumentFields;
 import com.learning.pramati.annotations.common.Documents;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -14,17 +16,21 @@ import java.util.List;
  */
 @DocType(type= Documents.BANKSTMT)
 public class BankStatement implements Document {
-	
+	@NotNull
 	private String accountNumber;
-
+	@NotNull
+	@DocType(type= DocumentFields.FULLNAME)
 	private String customerName;
 	
 	private List<Transaction> transactions;
-	
+	@NotNull
+	@DocType(type=DocumentFields.ADDRESS)
 	private String address;
-	
+	@NotNull
+	@DocType(type= DocumentFields.MOBILENUMBER)
 	private String mobileNumber;
-	
+	@NotNull
+	@DocType(type= DocumentFields.EMAIL)
 	private String email;
 
 	public String getAccountNumber() {
