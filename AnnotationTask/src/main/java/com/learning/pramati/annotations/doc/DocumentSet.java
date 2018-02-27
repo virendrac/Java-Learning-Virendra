@@ -1,11 +1,15 @@
 package com.learning.pramati.annotations.doc;
 
 import com.learning.pramati.annotations.DocConsistency;
+import com.learning.pramati.annotations.common.Documents;
 
 @DocConsistency
 public class DocumentSet {
+    @DocConsistency(type = Documents.AADHAAR)
     private Aadhar aadhar;
+    @DocConsistency(type = Documents.PAN)
     private PanCard panCard;
+    @DocConsistency(type = Documents.BANKSTMT)
     private BankStatement bankStatement;
 
     public Aadhar getAadhar() {

@@ -23,45 +23,80 @@ import java.util.logging.Logger;
  *
  */
 
-public class DocConsistencyValidator implements ConstraintValidator<DocConsistency,DocumentSet> {
+public class DocConsistencyValidator implements ConstraintValidator<DocConsistency,Object> {
 	private static final Logger LOGGER = Logger.getLogger(DocConsistencyValidator.class.getName());
 	String type;
 
 	private static List errorMessages = new ArrayList();
-	public static List validateDocConsistency(DocumentSet obj) throws IllegalAccessException {
+	public static List validateDocConsistency(Object obj) throws IllegalAccessException {
 		if (obj != null){
-			if(validateNotNull(obj)){
-				if(!obj.getPanCard().getFullname().equalsIgnoreCase(obj.getAadhar().getFullname())
-						|| !obj.getPanCard().getFullname().equalsIgnoreCase(obj.getBankStatement().getCustomerName())){
-					errorMessages.add("Name consistency broken.");
+			DocConsistency annotation = obj.getClass().getAnnotation(DocConsistency.class);
+			if(annotation!=null) {
+				Field[] fields=obj.getClass().getFields();
+				Aadhar aadhar=null;
+				PanCard panCard=null;
+				BankStatement bankStatement=null;
+				if(fields!=null){
+					for(Field f :fields){
+						DocConsistency docConsistency=f.getAnnotation(DocConsistency.class);
+						if(docConsistency!=null){
+							switch (docConsistency.type()){
+								case (Documents.AADHAAR):
+									f.setAccessible(true);
+									aadhar= (Aadhar) f.get(obj);
+								case (Documents.PAN):
+									f.setAccessible(true);
+									panCard= (PanCard) f.get(obj);
+								case (Documents.BANKSTMT):
+									f.setAccessible(true);
+									bankStatement= (BankStatement) f.get(obj);
+							}
+						}
+					}
 				}
-				if(!obj.getAadhar().getAddress().equalsIgnoreCase(obj.getBankStatement().getAddress())){
-					errorMessages.add("Address consistency broken.");
+				if(aadhar!=null && panCard!=null && bankStatement!=null){
+					if (!panCard.getFullname().equalsIgnoreCase(aadhar.getFullname())
+							|| !panCard.getFullname().equalsIgnoreCase(bankStatement.getCustomerName())) {
+						errorMessages.add("Name consistency broken.");
+					}
+					if (!aadhar.getAddress().equalsIgnoreCase(bankStatement.getAddress())) {
+						errorMessages.add("Address consistency broken.");
+					}
+					if (!aadhar.getDob().equals(panCard.getDob())) {
+						errorMessages.add("DOB consistency broken.");
+					}
+				}else if(aadhar!=null && panCard!=null ){
+					if (!panCard.getFullname().equalsIgnoreCase(aadhar.getFullname())) {
+						errorMessages.add("Name consistency broken between Aadhaar and Pancard");
+					}
+					if (!aadhar.getDob().equals(panCard.getDob())) {
+						errorMessages.add("DOB consistency broken between Aadhaar and Pancard");
+					}
+
+				}else if(panCard!=null && bankStatement!=null){
+					if (!panCard.getFullname().equalsIgnoreCase(bankStatement.getCustomerName())) {
+						errorMessages.add("Name consistency broken between BankStatement and Pancard");
+					}
+				}else if(aadhar!=null &&  bankStatement!=null){
+					if ( !panCard.getFullname().equalsIgnoreCase(bankStatement.getCustomerName())) {
+						errorMessages.add("Name consistency broken between BankStatement and Aadhaar");
+					}
+					if (!aadhar.getAddress().equalsIgnoreCase(bankStatement.getAddress())) {
+						errorMessages.add("Address consistency broken between BankStatement and Aadhaar");
+					}
+				}else{
+					errorMessages.add("Not a valid set of documents to verify consistency.");
 				}
-				if(!obj.getAadhar().getDob().equals(obj.getPanCard().getDob())){
-					errorMessages.add("DOB consistency broken.");
-				}
+			}else
+			{
+				errorMessages.add("DocConsistency annotation not found in the object.");
 			}
 		}else {
 			errorMessages.add("A Document set should not be null.");
 		}
 		return errorMessages;
 	}
-
-
-	private static boolean validateNotNull(DocumentSet o) {
-		if (null == o.getAadhar()) {
-			errorMessages.add("Aadhaar can't be null");
-			return false;
-		}else if (null == o.getBankStatement()) {
-			errorMessages.add("BankStatement can't be null");
-			return false;
-		}else if (null == o.getPanCard()) {
-			errorMessages.add("PanCard can't be null");
-			return false;
-		}
-		return true;
-	}
+	
 
 	@Override
 	public void initialize(DocConsistency constraintAnnotation) {
@@ -69,8 +104,9 @@ public class DocConsistencyValidator implements ConstraintValidator<DocConsisten
 	}
 
 	@Override
-	public boolean isValid(DocumentSet documentSet, ConstraintValidatorContext constraintValidatorContext) {
+	public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
 		constraintValidatorContext.buildConstraintViolationWithTemplate("");
 		return false;
 	}
+
 }
