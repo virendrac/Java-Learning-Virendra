@@ -4,7 +4,10 @@
 package com.learning.pramati.annotations.doc;
 
 import com.learning.pramati.annotations.DocType;
+import com.learning.pramati.annotations.common.DocumentFields;
+import com.learning.pramati.annotations.common.Documents;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -12,22 +15,27 @@ import java.util.Date;
  *
  */
 
-@DocType(type="aadhaar")
-public class Aadhar {
+@DocType(type= Documents.AADHAAR)
+public class Aadhar implements Document{
 
-	@DocType(type="fullname")
+	@NotNull
+	@DocType(type= DocumentFields.FULLNAME)
 	private String fullname;
 
-	@DocType(type="gender")
+	@NotNull
+	@DocType(type=DocumentFields.GENDER)
 	private String gender;
 
-	@DocType(type="address")
+	@NotNull
+	@DocType(type=DocumentFields.ADDRESS)
 	private String address;
 
-	@DocType(type="dob")
+	@NotNull
+	@DocType(type=DocumentFields.DOB)
 	private Date dob;
 
-	@DocType(type = "AadhaarNumber")
+	@NotNull
+	@DocType(type = DocumentFields.AADHAARNUMBER)
 	private long aadhaarNumber;
 
 	public Aadhar() {

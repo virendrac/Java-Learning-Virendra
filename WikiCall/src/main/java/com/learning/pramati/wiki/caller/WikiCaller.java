@@ -1,7 +1,7 @@
 package com.learning.pramati.wiki.caller;
 
 import com.learning.pramati.property.PropertyReader;
-import sun.net.www.protocol.https.HttpsURLConnectionImpl;
+
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -37,33 +38,36 @@ public class WikiCaller  implements Callable<String>{
         String https_url = wikiURL+keyword;
         URL url;
         try {
+            if(! new File(basePath+keyword+".txt").exists()) {
+                url = new URL(https_url);
+                HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+                if (con.getResponseCode() == 200) {
 
-            url = new URL(https_url);
-            HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
-            if (con.getResponseCode() == 200) {
-
-                ObjectMapper mapper = new ObjectMapper();
+                    ObjectMapper mapper = new ObjectMapper();
 
 
-                try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-                    String response = br.readLine();
-                    String[] arr = response.split("\\{");
-                    response = arr[arr.length - 1];
-                    response = "{" + response.substring(0, response.length() - 3);
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                        String response = br.readLine();
+                        String[] arr = response.split("\\{");
+                        response = arr[arr.length - 1];
+                        response = "{" + response.substring(0, response.length() - 3);
 
-                    Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
-                    });
+                        Map<String, Object> wikiMap = mapper.readValue(response, new TypeReference<Map<String, Object>>() {
+                        });
 
-                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
-                    response = wikiMap.get("extract").toString();
-                    writer.write(response);
-                    writer.flush();
-                    this.notifyAll();
+                        if (wikiMap.get("extract") != null && !wikiMap.get("extract").toString().isEmpty()) {
+                            BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
+                            response = wikiMap.get("extract").toString();
+                            writer.write(response);
+                            writer.flush();
+                            this.notifyAll();
+                        }
+                    }
+                } else {
+                    LOGGER.log(Level.WARNING,"ResponseCode :: "+con.getResponseCode() +" ResponseMessage:: " +con.getResponseMessage());
+                    return "Unsuccessful writing :: " + keyword + ".txt";
                 }
-            } else {
-                return "Unsuccessful writing :: " + keyword + ".txt";
             }
-
         } catch (MalformedURLException e) {
             LOGGER.info("EXCEPTION:: "+e.getMessage());
         }

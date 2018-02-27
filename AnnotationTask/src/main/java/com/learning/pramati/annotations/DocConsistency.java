@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DocType {
+public @interface DocConsistency {
 
     String type() default Documents.DEFAULT;
 
