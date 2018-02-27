@@ -96,7 +96,7 @@ public class DocConsistencyValidator implements ConstraintValidator<DocConsisten
 		}
 		return errorMessages;
 	}
-	
+
 
 	@Override
 	public void initialize(DocConsistency constraintAnnotation) {
