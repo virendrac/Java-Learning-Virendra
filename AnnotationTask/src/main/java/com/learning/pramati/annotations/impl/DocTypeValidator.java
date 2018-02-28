@@ -25,10 +25,12 @@ import java.util.logging.Logger;
 public class DocTypeValidator implements ConstraintValidator<DocType,Object> {
 	private static final Logger LOGGER = Logger.getLogger(DocTypeValidator.class.getName());
 	String type;
+	private List errorMessages = new ArrayList();
 
-	private static List errorMessages = new ArrayList();
-	public static List validate(Object obj) throws IllegalAccessException {
+	public  List validate(Object obj) throws IllegalAccessException {
+		List errorMessages = new ArrayList();
 		if(obj!=null) {
+
 			Field[] fields = obj.getClass().getDeclaredFields();
 			DocType annotation = obj.getClass().getAnnotation(DocType.class);
 			if (annotation!=null) {
@@ -47,7 +49,8 @@ public class DocTypeValidator implements ConstraintValidator<DocType,Object> {
 		return errorMessages;
 	}
 
-	private static void validateData(DocType custAnnotation, Field field, Object obj) throws IllegalAccessException {
+	private  void validateData(DocType custAnnotation, Field field, Object obj) throws IllegalAccessException {
+		List errorMessages = new ArrayList();
 		switch (custAnnotation.type())
 		{
 			case (DocumentFields.AADHAARNUMBER):
@@ -55,41 +58,50 @@ public class DocTypeValidator implements ConstraintValidator<DocType,Object> {
 				validateNotNull(field.get(obj),field);
 				validateLengthConstraint(field.get(obj),field, 12);
 				validateRegexConstraint(field.get(obj),field, "[0-9]+");
+				break;
 			case(DocumentFields.FULLNAME):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
+				break;
 			case(DocumentFields.DOB):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
+				break;
 			case(DocumentFields.GENDER):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
 				validateGender(field.get(obj),field);
+				break;
 			case(DocumentFields.FATHERNAME):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
+				break;
 			case(DocumentFields.PANNUMBER):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
 				validateLengthConstraint(field.get(obj),field, 10);
 				validateRegexConstraint(field.get(obj),field, "[A-Za-z]{5}\\d{4}[A-Za-z]{1}");
+				break;
 			case(DocumentFields.ISSUEDBY):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
+				break;
 			case(DocumentFields.ACCOUNTNUMBER):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
+				break;
 			case(DocumentFields.MOBILENUMBER):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
+				break;
 			case(DocumentFields.EMAIL):
 				field.setAccessible(true);
 				validateNotNull(field.get(obj),field);
-
+				break;
 		}
 	}
 
-	private static void validateGender(Object o, Field field) {
+	private  void validateGender(Object o, Field field) {
 		String objString=o.toString().replaceAll(" ","");
 		if(objString.equalsIgnoreCase(Gender.FEMALE )||objString.equalsIgnoreCase(Gender.MALE )|| objString.equalsIgnoreCase(Gender.THIRD) ){
 			return;
@@ -97,20 +109,20 @@ public class DocTypeValidator implements ConstraintValidator<DocType,Object> {
 		errorMessages.add(field.getName() + " Invalid");
 	}
 
-	private static void validateNotNull(Object o, Field field) {
+	private  void validateNotNull(Object o, Field field) {
 		if (null == o) {
 			errorMessages.add(field.getName() + " can't be null");
 		}
 	}
 
-	private static void validateRegexConstraint(Object o, Field field, String regex ) {
+	private  void validateRegexConstraint(Object o, Field field, String regex ) {
 		String objString=o.toString().replaceAll(" ","");
 		if(!objString.matches(regex)){
 			errorMessages.add(field.getName() + " is invalid! Not in the required format!");
 		}
 	}
 
-	private static void validateLengthConstraint(Object o, Field field, int len) {
+	private  void validateLengthConstraint(Object o, Field field, int len) {
 		String objString=o.toString().replaceAll(" ","");
 		if (objString.length() == len) {
 			return;

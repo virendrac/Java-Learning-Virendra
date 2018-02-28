@@ -29,8 +29,9 @@ public class DocTypeTest {
         try {
             if(a.getClass().isAnnotationPresent(DocType.class)) {
                 List errors = null;
+                DocTypeValidator validator=new DocTypeValidator();
 
-                    errors = DocTypeValidator.validate(a);
+                errors = validator.validate(a);
 
                 Assert.assertEquals("Error(s): " + errors.toString(), 0, errors.size());
             }

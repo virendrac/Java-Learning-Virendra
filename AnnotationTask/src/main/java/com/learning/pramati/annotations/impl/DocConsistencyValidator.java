@@ -27,12 +27,12 @@ public class DocConsistencyValidator implements ConstraintValidator<DocConsisten
 	private static final Logger LOGGER = Logger.getLogger(DocConsistencyValidator.class.getName());
 	String type;
 
-	private static List errorMessages = new ArrayList();
-	public static List validateDocConsistency(Object obj) throws IllegalAccessException {
+	private  List errorMessages = new ArrayList();
+	public  List validateDocConsistency(Object obj) throws IllegalAccessException {
 		if (obj != null){
 			DocConsistency annotation = obj.getClass().getAnnotation(DocConsistency.class);
 			if(annotation!=null) {
-				Field[] fields=obj.getClass().getFields();
+				Field[] fields=obj.getClass().getDeclaredFields();
 				Aadhar aadhar=null;
 				PanCard panCard=null;
 				BankStatement bankStatement=null;
@@ -44,12 +44,15 @@ public class DocConsistencyValidator implements ConstraintValidator<DocConsisten
 								case (Documents.AADHAAR):
 									f.setAccessible(true);
 									aadhar= (Aadhar) f.get(obj);
+									break;
 								case (Documents.PAN):
 									f.setAccessible(true);
 									panCard= (PanCard) f.get(obj);
+									break;
 								case (Documents.BANKSTMT):
 									f.setAccessible(true);
 									bankStatement= (BankStatement) f.get(obj);
+									break;
 							}
 						}
 					}
