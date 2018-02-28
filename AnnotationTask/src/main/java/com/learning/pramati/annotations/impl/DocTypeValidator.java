@@ -2,14 +2,9 @@ package com.learning.pramati.annotations.impl;
 
 import com.learning.pramati.annotations.DocType;
 import com.learning.pramati.annotations.common.DocumentFields;
-import com.learning.pramati.annotations.common.Documents;
 import com.learning.pramati.annotations.common.Gender;
-import com.learning.pramati.annotations.doc.Aadhar;
-import com.learning.pramati.annotations.doc.Document;
-
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
+import javax.validation.ConstraintValidator;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;

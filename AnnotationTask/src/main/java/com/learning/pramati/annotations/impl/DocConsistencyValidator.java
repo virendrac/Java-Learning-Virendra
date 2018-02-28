@@ -1,19 +1,14 @@
 package com.learning.pramati.annotations.impl;
 
 import com.learning.pramati.annotations.DocConsistency;
-import com.learning.pramati.annotations.DocType;
-import com.learning.pramati.annotations.common.DocumentFields;
 import com.learning.pramati.annotations.common.Documents;
 import com.learning.pramati.annotations.doc.*;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 

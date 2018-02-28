@@ -10,8 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 import java.util.logging.Logger;
@@ -31,7 +30,7 @@ public class CSVReader {
         try{
             if(csvFile!=null && !csvFile.isEmpty() && Paths.get(csvFile) !=null && numberOfLinesPerFile >0) {
                 LOGGER.info("CSVReader.read :: start time " + new Date());
-                ExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+                ExecutorService executorService = Executors.newFixedThreadPool(10);
 
                 Stream<String> lines = Files.lines(Paths.get(csvFile));
 
