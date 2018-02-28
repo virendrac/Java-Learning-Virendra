@@ -32,7 +32,7 @@ public class FileLoader {
 
     public List<String> read() throws Exception {
         try {
-            MyFileReader reader=MyFileReaderFactory.getReader(Files.lines(Paths.get(path)).limit(1).collect(Collectors.toList()));
+            MyFileReader reader=MyFileReaderFactory.getReader(path);
             if(reader!=null){
                 return this.keywords= reader.read(path);
             }else {

@@ -68,6 +68,7 @@ public class WikiCaller  implements Callable<String>{
                                     writer.write(response);
                                     writer.flush();
                                     this.notifyAll();
+                                    LOGGER.info(" writing file : " + keyword+".txt successful!!! ");
                                 }else{
                                     LOGGER.info("Permission to write the file doesn't exist. File : "+f.getAbsolutePath());
                                 }
@@ -78,7 +79,7 @@ public class WikiCaller  implements Callable<String>{
                         }
                     }
                 } else {
-                    LOGGER.log(Level.WARNING,"ResponseCode :: "+con.getResponseCode() +" ResponseMessage:: " +con.getResponseMessage());
+                    LOGGER.log(Level.WARNING,"For KeyWord : "+keyword+" ResponseCode :: "+con.getResponseCode() +" ResponseMessage:: " +con.getResponseMessage());
                     return "Unsuccessful writing :: " + keyword + ".txt";
                 }
             }

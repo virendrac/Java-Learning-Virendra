@@ -1,5 +1,7 @@
 package com.learning.pramati.wiki.filereader.factory;
 
+import com.learning.pramati.property.PropertyReader;
+import com.learning.pramati.wiki.FileNames;
 import com.learning.pramati.wiki.filereader.FortuneCompReader;
 import com.learning.pramati.wiki.filereader.JavaKeywordReader;
 import com.learning.pramati.wiki.filereader.LanguageNameReader;
@@ -16,15 +18,15 @@ public class MyFileReaderFactory {
 
 
 
-    public static MyFileReader getReader(List<String> collect) {
+    public static MyFileReader getReader(String path) {
         MyFileReader reader=null;
-        if(collect!=null && !collect.isEmpty()) {
-            if (collect.get(0).contains("1")) {
+        if(path!=null && !path.isEmpty()) {
+            if (path.equalsIgnoreCase(PropertyReader.getInstance().getProperty(FileNames.FORTUNE_FILE))) {
 
                 reader = new FortuneCompReader();
-            } else if (collect.get(0).contains("Keywords")) {
+            } else if (path.equalsIgnoreCase(PropertyReader.getInstance().getProperty(FileNames.JAVA_KEYWORDS_FILE))) {
                 reader = new JavaKeywordReader();
-            } else if (collect.get(0).startsWith("A")) {
+            } else if (path.equalsIgnoreCase(PropertyReader.getInstance().getProperty(FileNames.PROGRAMMING_LANGUAGE_FILE))) {
 
                 reader = new LanguageNameReader();
             }
