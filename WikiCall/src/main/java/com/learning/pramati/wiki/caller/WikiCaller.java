@@ -29,6 +29,7 @@ public class WikiCaller  implements Callable<String>{
     }
 
     public static String basePath=PropertyReader.getInstance().getProperty("baseFolder");
+    private static File baseDir=new File(basePath);
     String wikiURL = PropertyReader.getInstance().getProperty("wikiURL");
 
     @Override
@@ -56,11 +57,24 @@ public class WikiCaller  implements Callable<String>{
                         });
 
                         if (wikiMap.get("extract") != null && !wikiMap.get("extract").toString().isEmpty()) {
-                            BufferedWriter writer = Files.newBufferedWriter(Paths.get(basePath + keyword + ".txt"));
-                            response = wikiMap.get("extract").toString();
-                            writer.write(response);
-                            writer.flush();
-                            this.notifyAll();
+                            if(baseDir !=null && baseDir.exists() && baseDir.canWrite()) {
+                                File f=new File(baseDir.getAbsolutePath()+"/"+  keyword + ".txt");
+
+                                if(!f.exists())
+                                    f.createNewFile();
+                                if(f.canWrite()) {
+                                    BufferedWriter writer = Files.newBufferedWriter(Paths.get(f.getAbsolutePath()));
+                                    response = wikiMap.get("extract").toString();
+                                    writer.write(response);
+                                    writer.flush();
+                                    this.notifyAll();
+                                }else{
+                                    LOGGER.info("Permission to write the file doesn't exist. File : "+f.getAbsolutePath());
+                                }
+                            }
+                            else{
+                                LOGGER.info(" Given path is not a valid write location. Path:  " + baseDir.getAbsolutePath() + "\n");
+                            }
                         }
                     }
                 } else {
