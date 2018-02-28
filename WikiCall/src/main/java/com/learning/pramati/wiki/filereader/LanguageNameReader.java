@@ -17,7 +17,7 @@ public class LanguageNameReader implements MyFileReader {
     private static final Logger LOGGER = Logger.getLogger(LanguageNameReader.class.getName());
     @Override
     public List<String> read(String path) {
-//        List<String> list= new ArrayList<String>((int) (stream.count()*1.75));
+
         try {
             return Files.lines(Paths.get(path)).collect(Collectors.toList());
         } catch (IOException e) {

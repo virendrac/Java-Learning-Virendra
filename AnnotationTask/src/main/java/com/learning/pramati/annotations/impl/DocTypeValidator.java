@@ -31,9 +31,7 @@ public class DocTypeValidator implements ConstraintValidator<DocType,Object> {
 		if(obj!=null) {
 			Field[] fields = obj.getClass().getDeclaredFields();
 			DocType annotation = obj.getClass().getAnnotation(DocType.class);
-			if (annotation.type().equalsIgnoreCase(Documents.AADHAAR)
-					|| annotation.type().equalsIgnoreCase(Documents.PAN)
-					|| annotation.type().equalsIgnoreCase(Documents.BANKSTMT)) {
+			if (annotation!=null) {
 				for (int i = 0; i < fields.length; i++) {
 					DocType custAnnotation = (DocType) fields[i].getAnnotation(DocType.class);
 

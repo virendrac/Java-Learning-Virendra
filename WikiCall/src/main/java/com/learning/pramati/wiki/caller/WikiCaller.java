@@ -28,7 +28,7 @@ public class WikiCaller  implements Callable<String>{
         keyword=str;
     }
 
-    public static String basePath=PropertyReader.getInstance().getProperty("baseFolder");
+    private static String basePath=PropertyReader.getInstance().getProperty("baseFolder");
     private static File baseDir=new File(basePath);
     String wikiURL = PropertyReader.getInstance().getProperty("wikiURL");
 
