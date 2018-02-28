@@ -51,13 +51,16 @@ public class CSVSplitter implements  Runnable {
                 if(!f.exists())
                     f.createNewFile();
 
-                Path file=Paths.get(f.getAbsolutePath());
+                if(f.canWrite()) {
+                    Path file = Paths.get(f.getAbsolutePath());
 
-                writer = Files.newBufferedWriter(file);
+                    writer = Files.newBufferedWriter(file);
 
-                writer.write(lines.toString());
-                writer.flush();
-
+                    writer.write(lines.toString());
+                    writer.flush();
+                }else{
+                    LOGGER.info("Permission to write the file doesn't exist. File : "+f.getAbsolutePath());
+                }
             } catch (IOException e) {
                 LOGGER.info(" Exception:: " + e.getStackTrace());
             }
