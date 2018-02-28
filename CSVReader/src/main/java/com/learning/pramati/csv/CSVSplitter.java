@@ -3,12 +3,15 @@ package com.learning.pramati.csv;
 import com.learning.pramati.property.PropertyReader;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.io.File;
 
 
 /*
@@ -23,7 +26,7 @@ public class CSVSplitter implements  Runnable {
 
     static int index=0;
     List< String> lines;
-    static String writeLocation= PropertyReader.getInstance().getProperty(CommonProperties.WRITELOCATION);
+    static File baseDir=new File(PropertyReader.getInstance().getProperty(CommonProperties.WRITELOCATION));
 
     public CSVSplitter(List< String>  lines) {
         this.lines=lines;
@@ -38,19 +41,31 @@ public class CSVSplitter implements  Runnable {
         synchronized ((Object) index) {
             index++;
         }
-        try {
 
-            BufferedWriter writer = null;
+        if(baseDir !=null && baseDir.exists() && baseDir.canWrite()){
+            try {
 
-            writer = Files.newBufferedWriter(Paths.get(writeLocation+"File" + i + ".txt"));
+                BufferedWriter writer = null;
+                File f=new File(baseDir.getAbsolutePath()+"/File" + i + ".txt");
 
-            writer.write(lines.toString());
-            writer.flush();
+                if(!f.exists())
+                    f.createNewFile();
 
-        } catch (IOException e) {
-            LOGGER.info(" Exception:: " + e.getStackTrace());
+                Path file=Paths.get(f.getAbsolutePath());
+
+                writer = Files.newBufferedWriter(file);
+
+                writer.write(lines.toString());
+                writer.flush();
+
+            } catch (IOException e) {
+                LOGGER.info(" Exception:: " + e.getStackTrace());
+            }
+        }else{
+            LOGGER.info(" Given path is not a valid write location. Path:  " + baseDir.getAbsolutePath() + "\n");
         }
         LOGGER.info(Thread.currentThread().getName() +" Exit run() :: " +new Date());
+
 
     }
 
