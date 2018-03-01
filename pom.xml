@@ -17,7 +17,6 @@
         <module>WordCounter</module>
         <module>GenericEnum</module>
         <module>AnnotationTask</module>
-        <module>SieveOfEratosthenes</module>
         <module>ObserverPattern</module>
     </modules>
 
