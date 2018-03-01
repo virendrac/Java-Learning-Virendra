@@ -2,12 +2,9 @@ package com.learning.pramati.word.mapper;
 
 
 import com.learning.pramati.word.MappingService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 
